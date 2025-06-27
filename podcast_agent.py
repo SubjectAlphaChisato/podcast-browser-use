@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv(".env", override=True)
 
-from langchain_google_genai import ChatGoogleGenerativeAI
+from browser_use.llm.google import ChatGoogle
 
 from browser_use import Agent
 from browser_use.browser import BrowserProfile, BrowserSession
@@ -25,23 +25,18 @@ trade_path = "/trade"
 pulse_path = "/pulse"
 
 prompt_template = f"""
-Go to https://axiom.trade
-You will click login button through login
-input email: {os.getenv("AXIOM_EMAIL")}
-password: {os.getenv("AXIOM_PASSWORD")}
-Then, click Login
+Go to https://gmgn.ai/
 
 You are an agent that go to {domain + trade_path} and browse the trade options. \
 1. select top 5 newly creation meme coin
-2. click on those 5 coins and check their pricing change
-3. go to {domain + pulse_path} and check the 'New Pair', 'Final stretch' and 'Migrated' of those 5 coins
-and repeat
+2. click on those 5 coins ONE BY ONE and check their pricing change
+3. go to {domain + pulse_path} and check the 'New Pair', 'Final stretch' and 'Migrated' of these 5 coins one by one
 """
 
 async def main():
 	agent = Agent(
 		task=prompt_template,
-		llm=ChatGoogleGenerativeAI(model='gemini-2.0-flash', api_key=os.getenv("GOOGLE_API_KEY")),
+		llm=ChatGoogle(model='gemini-2.0-flash', api_key=os.getenv("GOOGLE_API_KEY")),
 		browser_session=browser_session,
 	)
 
