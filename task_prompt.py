@@ -13,9 +13,3 @@ You are an agent that go to {domain + trade_path} and browse the trade options. 
 1. select top 5 newly creation meme coin
 2. click on those 5 coins ONE BY ONE and click the coin board to their pricing change
 """
-
-trade_prompt_template = f"""
-Go to {domain}
-
-click 'buy' button of top 5 newly creation meme coin
-"""

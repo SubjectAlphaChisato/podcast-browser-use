@@ -12,7 +12,7 @@ from browser_use.llm.google import ChatGoogle
 
 from browser_use import Agent
 from browser_use.browser import BrowserProfile, BrowserSession
-
+from task_prompt import buy_prompt_template
 browser_profile = BrowserProfile(
 	# NOTE: you need to close your chrome browser - so that this can open your browser in debug mode
 	executable_path='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
@@ -25,7 +25,7 @@ trade_path = "/trade"
 pulse_path = "/pulse"
 
 prompt_template = f"""
-Go to https://gmgn.ai/
+Go to {domain}
 
 You are an agent that go to {domain + trade_path} and browse the trade options. \
 1. select top 5 newly creation meme coin
@@ -35,7 +35,7 @@ You are an agent that go to {domain + trade_path} and browse the trade options. 
 
 async def main():
 	agent = Agent(
-		task=prompt_template,
+		task=buy_prompt_template.format(trade_coin_name="PeePee", amount="100"),
 		llm=ChatGoogle(model='gemini-2.0-flash', api_key=os.getenv("GOOGLE_API_KEY")),
 		browser_session=browser_session,
 	)
