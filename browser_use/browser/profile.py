@@ -554,7 +554,7 @@ class BrowserProfile(BrowserConnectArgs, BrowserLaunchPersistentContextArgs, Bro
 		default=None,
 		description='List of allowed domains for navigation e.g. ["*.google.com", "https://example.com", "chrome-extension://*"]',
 	)
-	keep_alive: bool | None = Field(default=None, description='Keep browser alive after agent run.')
+	keep_alive: bool | None = Field(default=False, description='Keep browser alive after agent run.')
 	window_size: ViewportSize | None = Field(
 		default=None,
 		description='Browser window size to use when headless=False.',
@@ -754,7 +754,7 @@ class BrowserProfile(BrowserConnectArgs, BrowserLaunchPersistentContextArgs, Bro
 			self.viewport = self.viewport or self.window_size or self.screen
 			self.window_position = None  # no windows to position in headless mode
 			self.window_size = None
-			self.no_viewport = False  # viewport is always enabled in headless mode
+			self.no_viewport = True  # viewport is always enabled in headless mode
 		else:
 			# headful mode: use window, disable viewport by default, content fits to size of window
 			self.window_size = self.window_size or self.screen

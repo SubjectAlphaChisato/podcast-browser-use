@@ -1,6 +1,6 @@
 import os
-domain = "https://axiom.discover"
-trade_path = "/trade"
+domain = "https://axiom.trade"
+trade_path = "/discover"
 pulse_path = "/pulse"
 default_template = f"""
 Go to {domain}
