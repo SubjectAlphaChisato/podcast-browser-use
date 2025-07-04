@@ -349,6 +349,7 @@ class Agent(Generic[Context]):
 					'Call: await browser_session.start()'
 				)
 
+			browser_session.browser_profile.keep_alive = True
 			# always copy sessions that are passed in to avoid agents overwriting each other's agent_current_page and human_current_page by accident
 			self.browser_session = browser_session.model_copy(
 				# update={
