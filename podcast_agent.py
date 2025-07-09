@@ -23,6 +23,7 @@ browser_profile = BrowserProfile(
 )
 browser_session = BrowserSession(browser_profile=browser_profile)
 
+
 domain = "https://axiom.trade"
 trade_path = "/discover"
 pulse_path = "/pulse"
