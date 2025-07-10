@@ -36,6 +36,12 @@ You are an agent that go to {domain + trade_path} and browse the trade options. 
 3. go to {domain + pulse_path} and check the 'New Pair', 'Final stretch' and 'Migrated' of these 5 coins one by one
 """
 
+portfolio_prompt = f"""
+Go to {domain}
+
+you will go to https://axiom.trade/portfolio to check portfolio
+"""
+
 async def main():
 	while True:
 		ws.set_current_program_scene("mainScene")
