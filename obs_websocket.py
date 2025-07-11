@@ -31,7 +31,7 @@ async def trade():
         )
         await agent.run()
         await asyncio.sleep(10)
-        ws.set_current_program_scene("mainScene")
+        ws.set_current_program_scene("tradeVideo")
         return {"status": "done"}
     else:
         return {"status": "error", "message": "OBS WebSocket client not initialized"}
