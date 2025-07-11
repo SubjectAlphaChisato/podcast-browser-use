@@ -16,12 +16,8 @@ from browser_use.llm.google import ChatGoogle
 from browser_use import Agent
 from browser_use.browser import BrowserProfile, BrowserSession
 from task_prompt import default_template
-browser_profile = BrowserProfile(
-	# NOTE: you need to close your chrome browser - so that this can open your browser in debug mode
-	executable_path='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-	headless=False,
-)
-browser_session = BrowserSession(browser_profile=browser_profile)
+
+browser_session = BrowserSession(cdp_url="http://localhost:9222")
 
 def run_fastapi_server():
     """Function to run the FastAPI server in a separate thread"""

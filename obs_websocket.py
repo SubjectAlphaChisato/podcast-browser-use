@@ -8,12 +8,8 @@ from browser_use.llm.google import ChatGoogle
 from browser_use.browser import BrowserProfile, BrowserSession
 from task_prompt import default_template
 import os
-browser_profile = BrowserProfile(
-	# NOTE: you need to close your chrome browser - so that this can open your browser in debug mode
-	executable_path='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-	headless=False,
-)
-browser_session = BrowserSession(browser_profile=browser_profile)
+
+browser_session = BrowserSession(cdp_url="http://localhost:9222")
 
 app = FastAPI()
 # Create a single ReqClient instance
@@ -28,12 +24,14 @@ def set_req_client(client):
 async def trade():
     if ws is not None:
         ws.set_current_program_scene("mainScene")
-        # agent = Agent(
-        #     task=portfolio_prompt,
-        #     llm=ChatGoogle(model='gemini-2.0-flash', api_key=os.getenv("GOOGLE_API_KEY")),
-        #     browser_session=browser_session,
-        # )
-        # await agent.run()
+        agent = Agent(
+            task=portfolio_prompt,
+            llm=ChatGoogle(model='gemini-2.0-flash', api_key=os.getenv("GOOGLE_API_KEY")),
+            browser_session=browser_session,
+        )
+        await agent.run()
+        await asyncio.sleep(10)
+        ws.set_current_program_scene("mainScene")
         return {"status": "done"}
     else:
         return {"status": "error", "message": "OBS WebSocket client not initialized"}
