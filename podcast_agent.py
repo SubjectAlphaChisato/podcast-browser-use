@@ -17,7 +17,8 @@ from browser_use import Agent
 from browser_use.browser import BrowserProfile, BrowserSession
 from task_prompt import default_template
 
-browser_session = BrowserSession(cdp_url="http://localhost:9222")
+browser_profile = BrowserProfile()
+browser_session = BrowserSession(browser_profile=browser_profile, cdp_url="http://localhost:9222")
 
 def run_fastapi_server():
     """Function to run the FastAPI server in a separate thread"""
@@ -28,7 +29,8 @@ async def agent_loop():
     """Main agent loop that runs the browser agent and controls OBS scenes"""
     while True:
         ws.set_current_program_scene("tradingVideo")
-        await asyncio.sleep(300)  # Sleep for 5 minutes (300 seconds)
+        # Sleep for 5 minutes (300 seconds)
+        await asyncio.sleep(300)
         ws.set_current_program_scene("mainScene")
         agent = Agent(
             task=prompt_template,

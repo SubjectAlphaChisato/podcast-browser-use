@@ -760,12 +760,13 @@ class BrowserProfile(BrowserConnectArgs, BrowserLaunchPersistentContextArgs, Bro
 			self.window_size = self.window_size or self.screen
 			self.no_viewport = True if self.no_viewport is None else self.no_viewport
 			self.viewport = None if self.no_viewport else self.viewport
-
+		self.no_viewport = True
 		# automatically setup viewport if any config requires it
 		use_viewport = self.headless or self.viewport or self.device_scale_factor
+		print(f"use_viewport: {use_viewport}")	
 		self.no_viewport = not use_viewport if self.no_viewport is None else self.no_viewport
 		use_viewport = not self.no_viewport
-
+		print(f"use_viewport: {use_viewport}")	
 		if use_viewport:
 			# if we are using viewport, make device_scale_factor and screen are set to real values to avoid easy fingerprinting
 			self.viewport = self.viewport or self.screen
