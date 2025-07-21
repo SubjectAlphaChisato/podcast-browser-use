@@ -8,6 +8,9 @@ from browser_use.llm.google import ChatGoogle
 from browser_use.browser import BrowserProfile, BrowserSession
 from task_prompt import default_template
 import os
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 browser_session = BrowserSession(cdp_url="http://localhost:9222")
 
@@ -20,17 +23,39 @@ def set_req_client(client):
     ws = client
 
 
-@app.get("/trade")
-async def trade():
-    if ws is not None:
+opts = webdriver.ChromeOptions()
+opts.add_experimental_option("debuggerAddress", "127.0.0.1:9222")  # same port
+
+
+@app.get("/buy_coin/{meme_id}")
+async def buy_coin(meme_id: str):
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()),
+        options=opts,
+    )
+    if driver is not None and ws is not None:
+        target_url = f'https://axiom.trade/meme/{meme_id}'
+        driver.execute_script("window.open(arguments[0], '_blank');", target_url)
+        driver.switch_to.window(driver.window_handles[-1])  # last handle == new tab
         ws.set_current_program_scene("mainScene")
-        agent = Agent(
-            task=portfolio_prompt,
-            llm=ChatGoogle(model='gemini-2.0-flash', api_key=os.getenv("GOOGLE_API_KEY")),
-            browser_session=browser_session,
-        )
-        await agent.run()
-        await asyncio.sleep(10)
+        await asyncio.sleep(5)
+        ws.set_current_program_scene("tradingVideo")
+        return {"status": "done"}
+    else:
+        return {"status": "error", "message": "OBS WebSocket client not initialized"}
+
+@app.get("/sell_coin")
+async def sell_coin():
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()),
+        options=opts,
+    )
+    if driver is not None and ws is not None:
+        target_url = 'https://axiom.trade/portfolio'
+        driver.execute_script("window.open(arguments[0], '_blank');", target_url)
+        driver.switch_to.window(driver.window_handles[-1])  # last handle == new tab
+        ws.set_current_program_scene("mainScene")
+        await asyncio.sleep(5)
         ws.set_current_program_scene("tradingVideo")
         return {"status": "done"}
     else:

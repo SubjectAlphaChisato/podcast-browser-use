@@ -31,13 +31,13 @@ async def agent_loop():
         ws.set_current_program_scene("tradingVideo")
         # Sleep for 5 minutes (300 seconds)
         await asyncio.sleep(300)
-        ws.set_current_program_scene("mainScene")
-        agent = Agent(
-            task=prompt_template,
-            llm=ChatGoogle(model='gemini-2.0-flash', api_key=os.getenv("GOOGLE_API_KEY")),
-            browser_session=browser_session,
-        )
-        await agent.run()
+        # ws.set_current_program_scene("mainScene")
+        # agent = Agent(
+        #     task=prompt_template,
+        #     llm=ChatGoogle(model='gemini-2.0-flash', api_key=os.getenv("GOOGLE_API_KEY")),
+        #     browser_session=browser_session,
+        # )
+        # await agent.run()
         
         # await browser_session.close()
         # input('Press Enter to close...')
