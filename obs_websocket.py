@@ -11,7 +11,7 @@ import os
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-
+from consts import *
 browser_session = BrowserSession(cdp_url="http://localhost:9222")
 
 app = FastAPI()
@@ -34,11 +34,14 @@ async def buy_coin(meme_id: str):
         options=opts,
     )
     if driver is not None and ws is not None:
-        target_url = f'https://axiom.trade/meme/{meme_id}'
+        if PLATFORM == 'axiom':
+            target_url = f'https://axiom.trade/meme/{meme_id}'
+        else:
+            target_url = f'https://gmgn.ai/sol/token/{meme_id}'
         driver.execute_script("window.open(arguments[0], '_blank');", target_url)
         driver.switch_to.window(driver.window_handles[-1])  # last handle == new tab
         ws.set_current_program_scene("mainScene")
-        await asyncio.sleep(5)
+        await asyncio.sleep(PAGE_PAUSE_SEC)
         ws.set_current_program_scene("tradingVideo")
         return {"status": "done"}
     else:
@@ -51,11 +54,14 @@ async def sell_coin():
         options=opts,
     )
     if driver is not None and ws is not None:
-        target_url = 'https://axiom.trade/portfolio'
+        if PLATFORM == 'axiom':
+            target_url = 'https://axiom.trade/portfolio'
+        else:
+            target_url = 'https://gmgn.ai/portfolio'
         driver.execute_script("window.open(arguments[0], '_blank');", target_url)
         driver.switch_to.window(driver.window_handles[-1])  # last handle == new tab
         ws.set_current_program_scene("mainScene")
-        await asyncio.sleep(5)
+        await asyncio.sleep(PAGE_PAUSE_SEC)
         ws.set_current_program_scene("tradingVideo")
         return {"status": "done"}
     else:

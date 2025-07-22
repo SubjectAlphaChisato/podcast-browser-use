@@ -2,6 +2,8 @@ DOMAIN = "https://axiom.trade"
 TRADE_PATH = "/discover"
 PULSE_PATH = "/pulse"
 
+PLATFORM = "axiom"
+PAGE_PAUSE_SEC = 5
 prompt_template = f"""
 Go to {DOMAIN}
 
